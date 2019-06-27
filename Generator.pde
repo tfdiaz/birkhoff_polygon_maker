@@ -3,6 +3,8 @@ void cpyOver(Shape dest, Shape src) {
     copypts(dest.verts, src.verts, i, i);
     copypts(dest.best, src.best, i, i);
   }
+  dest.score = src.score;
+  dest.time = src.time;
 }
 
 float xmin, ymin, xmax, ymax;
@@ -35,6 +37,8 @@ void centerPts(float[][] verts, int num) {
   }
 }
 
+int prev_time = millis();
+
 void generate(Shape poly, Group grp) {
   
     int num = poly.num;
@@ -42,7 +46,6 @@ void generate(Shape poly, Group grp) {
     float[][] bst = poly.best;
     float prev = poly.score;
     float score = 0.0;
-    int b_num = 0;
     
     for (int t = 0; t < 50000; t++) {
       for (int i = 0; i < num; i++) {
@@ -50,22 +53,10 @@ void generate(Shape poly, Group grp) {
         verts[i][1] = random(height);
       }
       centerPts(verts, num);
-      if (v_sym.isOn) {
-        score += vert_scorer(verts, num);
-        b_num++;
-      }
-      if (h_sym.isOn) {
-        score += hort_scorer(verts, num);
-        b_num++;
-      }
-      if (bal.isOn) {
-        score += bal_scorer(verts, num);
-        b_num++;
-      }
-      if (b_num == 0)
-        b_num++;
-      score /= b_num;
+      score = scoreit(verts, num);
        if (score > poly.score) {
+         poly.time = millis() - prev_time;
+         prev_time = millis();
          poly.score = score;
          for (int i = 0; i < num; i++) {
            bst[i][0] = verts[i][0];
@@ -78,6 +69,8 @@ void generate(Shape poly, Group grp) {
            println("hort:", hort_scorer(bst, num));
          if (bal.isOn)
            println("bal:", bal_scorer(bst, num));
+         if (unsat_b.isOn)
+           println("unsat:", unsat_scorer(bst, num));
          break;
        }
     }

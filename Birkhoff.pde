@@ -1,21 +1,28 @@
 Shape sh;
 Group gp;
-PWindow win;
+Timeline win;
 Button v_sym;
 Button h_sym;
 Button bal;
+Button unsat_b;
+Change_Value b_increase;
+Change_Value b_decrease;
+int poly_size = 4;
 
 public void settings() {
-  size(300, 300);
+  size(400, 400);
 }
 
 void setup() {
-  sh = new Shape(10);
+  sh = new Shape(poly_size);
   gp = new Group(10);
-  win = new PWindow();
+  win = new Timeline();
   v_sym = new Button(10, height - 20, 10);
   h_sym = new Button(25, height - 20, 10);
   bal = new Button(40, height - 20, 10);
+  unsat_b = new Button(55, height - 20, 10);
+  b_increase = new Change_Value(width - 20, 10, 10, true);
+  b_decrease = new Change_Value(width - 20, 30, 10, false);
   generate(sh, gp);
 }
 
@@ -23,12 +30,16 @@ void draw_buttons() {
   v_sym.display();
   h_sym.display();
   bal.display();
+  unsat_b.display();
+  b_increase.display();
+  b_decrease.display();
 }
 
 void draw() {
   background(10);
-  pusher(sh);
-  sh.display(false);
+  //pusher(sh);
+  generate(sh, gp);
+  sh.display(true);
   draw_buttons();
   stroke(255);
   line(width/2, 0, width/2, height);
@@ -48,13 +59,17 @@ void draw() {
   //  vertex(verts[i][0], verts[i][1]);
   //endShape();
   //println(vert_scorer(verts, 4));
+  //noLoop();
 }
 
 void mousePressed() {
   v_sym.setButton();
   h_sym.setButton();
   bal.setButton();
-  sh = new Shape(10);
+  unsat_b.setButton();
+  b_increase.setButton();
+  b_decrease.setButton();
+  sh = new Shape(poly_size);
   generate(sh, gp);
   gp.insert(sh);
   gp.ct = 0;

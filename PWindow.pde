@@ -3,14 +3,14 @@ int row;
 int newx = 2000;
 int newy = 200;
 
-class PWindow extends PApplet {
-  PWindow() {
+class Timeline extends PApplet {
+  Timeline() {
     super();
     PApplet.runSketch(new String[] {this.getClass().getSimpleName()}, this);
   }
 
   void settings() {
-    size(2000, 300);
+    size(2000, 240);
   }
 
   void setup() {
@@ -34,6 +34,12 @@ class PWindow extends PApplet {
         vertex(sh.best[j][0] + (xoff * o), sh.best[j][1] + yoff);
        }
       endShape();
+      textAlign(CENTER);
+      fill(0);
+      String title = "Score: " + String.format("%.3f", sh.score);
+      String t_time = "Time: " + String.format("%d", sh.time);
+      text(title, (xoff * o + xoff / 2), newy + 5);
+      text(t_time, (xoff *o + xoff / 2), newy + 20);
     }
   }
 

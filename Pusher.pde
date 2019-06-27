@@ -15,6 +15,10 @@ float scoreit(float[][] verts, int num) {
         score += bal_scorer(verts, num);
         b_num++;
       }
+      if (unsat_b.isOn) {
+        score += unsat_scorer(verts, num);
+        b_num++;
+      }
       if (b_num == 0)
         b_num++;
       score /= b_num;
@@ -25,7 +29,7 @@ void  pusher(Shape poly) {
   float score = poly.score;
   int num = poly.num;
   for (int i = 0; i < num; i++) {
-    float newScr = 0.0;
+    float newScr;
     int dir = (int) random(4);
       for(int c = 0; c < num; c++) {
         if (dir == 0 && poly.verts[i][1] - amt > 0.0)
@@ -41,20 +45,20 @@ void  pusher(Shape poly) {
           println("Shifting:", newScr);
           score = newScr;
           poly.score = score;
-          amt *= 0.9;
+          //amt *= 0.9;
           break;
         } else {
-          if (dir == 0 && poly.verts[i][1] - amt > 0.0)
+          if (dir == 0)
             poly.verts[i][1] += amt;
-          else if (dir == 1 && poly.verts[i][0] + amt < width)
+          else if (dir == 1)
             poly.verts[i][0] -= amt;
-          else if (dir == 2 && poly.verts[i][1] + amt < height)
+          else if (dir == 2)
             poly.verts[i][1] -= amt;
-          else if (dir == 3 && poly.verts[i][0] - amt > 0.0)
+          else if (dir == 3)
             poly.verts[i][0] += amt;
-            amt = random(20);
+            amt = random(10);
         }
-        dir = (dir + 1) % 4;
+        dir = (int) random(4);
       }
     //  ct++;
     //}

@@ -5,6 +5,7 @@ class Shape {
   int num;
   int w;
   int h;
+  int time;
   
   Shape(int ct) {
     verts = new float[ct][2];
@@ -116,5 +117,23 @@ class Button {
     else
       fill(#B9B8B8);
     rect((float) x, (float) y, 10, 10);
+  }
+}
+
+class Change_Value extends Button {
+  boolean type;
+  
+  Change_Value(int posx, int posy, int s, boolean t) {
+    super(posx, posy, s);
+    type = t;
+  }
+  
+  void setButton() {
+    if (mouseX > x - size && mouseX < x + size && mouseY > y - size && mouseY < y + size) {
+      if (type)
+        poly_size++;
+      else if (poly_size > 3)
+        poly_size--;
+    }
   }
 }
